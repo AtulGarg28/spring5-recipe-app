@@ -18,14 +18,15 @@ public class Recipe {
     private String url;
     private String directions;
 
-    //todo
-//    private Difficulty difficulty;
+    @Enumerated(value = EnumType.STRING)        // EnumType has two i.e. Original and String, In Original it is default i.e. gives numbers, but in String it gives strings i.e. like EASY, HARD...
+    private Difficulty difficulty;
 
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "recipe")               //recipe is the target property on the ingredient class.
     private Set<Ingredient> ingredients;
 
     @Lob
     private Byte[] image;
+
     @OneToOne(cascade = CascadeType.ALL)            //Here, cascade means, if we delete recipe then it will also delete notes, but we don't need that if we delete notes then it will delete recipe. So, that's why we don't need cascade three i.e. in Notes.
     private Notes notes;
 
@@ -91,6 +92,14 @@ public class Recipe {
 
     public void setDirections(String directions) {
         this.directions = directions;
+    }
+
+    public Difficulty getDifficulty() {
+        return difficulty;
+    }
+
+    public void setDifficulty(Difficulty difficulty) {
+        this.difficulty = difficulty;
     }
 
     public Set<Ingredient> getIngredients() {
