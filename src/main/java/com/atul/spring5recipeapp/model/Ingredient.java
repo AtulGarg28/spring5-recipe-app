@@ -12,7 +12,7 @@ public class Ingredient {
     private String description;
     private BigDecimal amount;
 
-    @OneToOne(fetch = FetchType.EAGER)              // EAGER GETCHTYPE is used to get it every time.
+    @OneToOne(fetch = FetchType.EAGER)              // EAGER FETCHTYPE is used to get it every time.
     private UnitOfMeasure uom;
 
     @ManyToOne
