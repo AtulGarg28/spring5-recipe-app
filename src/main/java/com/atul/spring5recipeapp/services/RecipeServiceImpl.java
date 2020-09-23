@@ -1,9 +1,13 @@
 package com.atul.spring5recipeapp.services;
 
+import com.atul.spring5recipeapp.commands.RecipeCommands;
+import com.atul.spring5recipeapp.converters.RecipeCommandsToRecipe;
+import com.atul.spring5recipeapp.converters.RecipeToRecipeCommands;
 import com.atul.spring5recipeapp.model.Recipe;
 import com.atul.spring5recipeapp.repositories.RecipeRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.Optional;
@@ -14,9 +18,13 @@ import java.util.Set;
 public class RecipeServiceImpl implements RecipeService{
 
     private final RecipeRepository recipeRepository;
+    private final RecipeCommandsToRecipe recipeCommandsToRecipe;
+    private final RecipeToRecipeCommands recipeToRecipeCommands;
 
-    public RecipeServiceImpl(RecipeRepository recipeRepository) {
+    public RecipeServiceImpl(RecipeRepository recipeRepository, RecipeCommandsToRecipe recipeCommandsToRecipe, RecipeToRecipeCommands recipeToRecipeCommands) {
         this.recipeRepository = recipeRepository;
+        this.recipeCommandsToRecipe = recipeCommandsToRecipe;
+        this.recipeToRecipeCommands = recipeToRecipeCommands;
     }
 
     @Override
@@ -34,5 +42,14 @@ public class RecipeServiceImpl implements RecipeService{
             throw new RuntimeException("Recipe Not found");
         }
         return optionalRecipe.get();
+    }
+
+    @Override
+    @Transactional
+    public RecipeCommands saveRecipeCommand(RecipeCommands recipeCommands) {
+        Recipe recipeDetached=recipeCommandsToRecipe.convert(recipeCommands);
+        Recipe savedRecipe=recipeRepository.save(recipeDetached);
+        log.debug("Recipe saved of id: "+savedRecipe.getId());
+        return recipeToRecipeCommands.convert(savedRecipe);
     }
 }
