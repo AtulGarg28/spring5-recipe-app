@@ -44,7 +44,7 @@
                                     <td>2</td>
                                     <td>Tasty Goodness 2</td>
                                 </tr>
-                                <!--/*@thymesVar id="recipe" type="guru.springframework.domain.Recipe"*/-->
+                                <!--/*@thymesVar id="recipe" type="com.atul.spring5recipeapp.model.Recipe"*/-->
                                 <tr th:each="recipe : ${recipes}">
                                     <td th:text="${recipe.id}">3</td>
                                     <td th:text="${recipe.description}">Tasty Goodness 3</td>

@@ -1,10 +1,10 @@
 package com.atul.spring5recipeapp.controllers;
 
+import com.atul.spring5recipeapp.commands.RecipeCommands;
 import com.atul.spring5recipeapp.services.RecipeService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class RecipeController {
@@ -19,5 +19,19 @@ public class RecipeController {
     public String showById(@PathVariable String id, Model model){
         model.addAttribute("recipe",recipeService.findById(new Long(id)));
         return "recipe/show";
+    }
+
+    @RequestMapping("recipe/new")
+    public String newRecipe(Model model){
+        model.addAttribute("recipe",new RecipeCommands());
+        return "recipe/recipeForm";
+    }
+
+    @PostMapping
+    @RequestMapping("recipe")           //Here, it is name="recipe", Thus it is used for the submit button
+    public String saveOrUpdate(@ModelAttribute RecipeCommands commands){
+        RecipeCommands savedRecipeCommands= recipeService.saveRecipeCommand(commands);
+
+        return "redirect:/recipe/show/"+savedRecipeCommands.getId();
     }
 }
