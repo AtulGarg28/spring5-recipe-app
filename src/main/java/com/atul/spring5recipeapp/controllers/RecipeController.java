@@ -15,7 +15,7 @@ public class RecipeController {
         this.recipeService = recipeService;
     }
 
-    @RequestMapping("/recipe/show/{id}")
+    @RequestMapping("/recipe/{id}/show")
     public String showById(@PathVariable String id, Model model){
         model.addAttribute("recipe",recipeService.findById(new Long(id)));
         return "recipe/show";
@@ -27,11 +27,17 @@ public class RecipeController {
         return "recipe/recipeForm";
     }
 
+    @RequestMapping("recipe/{id}/update")
+    public String updateRecipe(@PathVariable String id, Model model){
+        model.addAttribute("recipe",recipeService.findCommandById(Long.valueOf(id)));
+        return "recipe/recipeForm";
+    }
+
     @PostMapping
-    @RequestMapping("recipe")           //Here, it is name="recipe", Thus it is used for the submit button
+    @RequestMapping("recipe")
     public String saveOrUpdate(@ModelAttribute RecipeCommands commands){
         RecipeCommands savedRecipeCommands= recipeService.saveRecipeCommand(commands);
 
-        return "redirect:/recipe/show/"+savedRecipeCommands.getId();
+        return "redirect:/recipe/" +savedRecipeCommands.getId() +"/show";
     }
 }
