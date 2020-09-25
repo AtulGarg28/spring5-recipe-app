@@ -1,5 +1,6 @@
 package com.atul.spring5recipeapp.services;
 
+import com.atul.spring5recipeapp.commands.RecipeCommands;
 import com.atul.spring5recipeapp.converters.RecipeCommandsToRecipe;
 import com.atul.spring5recipeapp.converters.RecipeToRecipeCommands;
 import com.atul.spring5recipeapp.model.Recipe;
@@ -51,13 +52,55 @@ class RecipeServiceImplTest {
 
     @Test
     void getRecipeByIdTest() {
+        //GIVEN
         Recipe recipe=new Recipe();
         recipe.setId(1L);
         Optional<Recipe> optionalRecipe=Optional.of(recipe);
+
+        //WHEN
         when(recipeRepository.findById(anyLong())).thenReturn(optionalRecipe);
         Recipe returnedRecipe=recipeService.findById(1L);
-//        assertNotNull(returnedRecipe,"Null Recipe Returned");
-//        verify(recipeRepository,times(1)).findById(anyLong());
-//        verify(recipeRepository,never()).findAll();
+
+        //then
+        assertNotNull(returnedRecipe,"Null Recipe Returned");
+        verify(recipeRepository,times(1)).findById(anyLong());
+        verify(recipeRepository,never()).findAll();
+    }
+    @Test
+    void getRecipeCommandByIdTest() {
+        //given
+        Recipe recipe=new Recipe();
+        recipe.setId(1L);
+        Optional<Recipe> optionalRecipe=Optional.of(recipe);
+
+        when(recipeRepository.findById(anyLong())).thenReturn(optionalRecipe);
+
+        RecipeCommands recipeCommands=new RecipeCommands();
+        recipeCommands.setId(1L);
+
+        //when
+        when(recipeToRecipeCommands.convert(any())).thenReturn(recipeCommands);
+        RecipeCommands findedRecipeCommands=recipeService.findCommandById(1L);
+
+        //then
+        assertNotNull(findedRecipeCommands);
+        verify(recipeRepository,times(1)).findById(anyLong());
+        verify(recipeToRecipeCommands,times(1)).convert(any());
+        verify(recipeRepository,never()).findAll();
+        assertEquals(recipe.getId(),findedRecipeCommands.getId());
+    }
+
+    @Test
+    void deleteRecipeByIdTest() {
+        //given
+        Long idToBeDeleted=new Long(2L);
+
+        //when
+
+        //HERE, NO WHEN IS USED, AS THE METHOD IS NOT RETURNING ANYTHING. HERE, THE METHOD IS recipeRepository.deleteById(anyLong());
+        recipeService.deleteRecipeById(idToBeDeleted);
+
+        //then
+        verify(recipeRepository,times(1)).deleteById(anyLong());
     }
 }
