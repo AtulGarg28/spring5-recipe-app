@@ -18,7 +18,7 @@ public class UnitOfMeasureToUnitOfMeasureCommands implements Converter<UnitOfMea
             return null;
         }
 
-        UnitOfMeasureCommands unitOfMeasureCommands=new UnitOfMeasureCommands();
+        final UnitOfMeasureCommands unitOfMeasureCommands=new UnitOfMeasureCommands();
         unitOfMeasureCommands.setId(unitOfMeasure.getId());
         unitOfMeasureCommands.setDescription(unitOfMeasure.getDescription());
 

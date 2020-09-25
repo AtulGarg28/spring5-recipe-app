@@ -28,7 +28,7 @@ public class RecipeToRecipeCommands implements Converter<Recipe, RecipeCommands>
             return null;
         }
 
-        RecipeCommands recipeCommands=new RecipeCommands();
+        final RecipeCommands recipeCommands=new RecipeCommands();
         recipeCommands.setId(recipe.getId());
         recipeCommands.setDescription(recipe.getDescription());
         recipeCommands.setPrepTime(recipe.getPrepTime());
