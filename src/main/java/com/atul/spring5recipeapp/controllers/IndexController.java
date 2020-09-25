@@ -1,9 +1,5 @@
 package com.atul.spring5recipeapp.controllers;
 
-import com.atul.spring5recipeapp.model.Category;
-import com.atul.spring5recipeapp.model.UnitOfMeasure;
-import com.atul.spring5recipeapp.repositories.CategoryRepository;
-import com.atul.spring5recipeapp.repositories.UnitOfMeasureRepository;
 import com.atul.spring5recipeapp.services.RecipeService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
