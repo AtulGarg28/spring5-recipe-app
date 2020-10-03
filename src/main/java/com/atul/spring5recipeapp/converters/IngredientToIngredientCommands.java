@@ -26,10 +26,13 @@ public class IngredientToIngredientCommands implements Converter<Ingredient, Ing
 
         IngredientCommands ingredientCommands=new IngredientCommands();
         ingredientCommands.setId(ingredient.getId());
+
         ingredientCommands.setDescription(ingredient.getDescription());
+
         if (ingredient.getRecipe() != null) {
             ingredientCommands.setRecipeId(ingredient.getRecipe().getId());
         }
+
         ingredientCommands.setAmount(ingredient.getAmount());
         ingredientCommands.setUom(unitOfMeasureConverter.convert(ingredient.getUom()));
 

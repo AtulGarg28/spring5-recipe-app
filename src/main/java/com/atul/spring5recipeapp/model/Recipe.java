@@ -51,7 +51,6 @@ public class Recipe {
 
     public Recipe addIngredient(Ingredient ingredient){
         ingredient.setRecipe(this);
-//        System.out.println("Helo");
         this.ingredients.add(ingredient);
         return this;
     }

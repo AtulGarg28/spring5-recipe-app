@@ -1,6 +1,5 @@
 package com.atul.spring5recipeapp.commands;
 
-import com.atul.spring5recipeapp.model.UnitOfMeasure;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
