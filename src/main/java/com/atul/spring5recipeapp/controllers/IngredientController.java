@@ -1,6 +1,8 @@
 package com.atul.spring5recipeapp.controllers;
 
 import com.atul.spring5recipeapp.commands.IngredientCommands;
+import com.atul.spring5recipeapp.commands.RecipeCommands;
+import com.atul.spring5recipeapp.commands.UnitOfMeasureCommands;
 import com.atul.spring5recipeapp.services.IngredientService;
 import com.atul.spring5recipeapp.services.RecipeService;
 import com.atul.spring5recipeapp.services.UnitOfMeasureService;
@@ -33,7 +35,7 @@ public class IngredientController {
 
     @GetMapping
     @RequestMapping("/recipe/{recipe_id}/ingredient/{ingredient_id}/show")
-    public String ViewIngredient(@PathVariable String recipe_id,@PathVariable String ingredient_id, Model model){
+    public String ViewIngredient(@PathVariable String recipe_id, @PathVariable String ingredient_id, Model model){
         log.debug("Getting list of ingredients on the basis of recipe id: "+recipe_id);
         model.addAttribute("ingredient",ingredientService.findByRecipeIdAndIngredientId(Long.valueOf(recipe_id),Long.valueOf(ingredient_id)));
         return "ingredient/show";
@@ -45,6 +47,23 @@ public class IngredientController {
                                    @PathVariable String ingredient_id, Model model){
         log.debug("updating ingredient on the basis of recipe id: "+recipe_id);
         IngredientCommands ingredientCommands=ingredientService.findByRecipeIdAndIngredientId(Long.valueOf(recipe_id),Long.valueOf(ingredient_id));
+        model.addAttribute("ingredient",ingredientCommands);
+        model.addAttribute("uomList",unitOfMeasureService.listAllUoms());
+        return "ingredient/ingredientForm";
+    }
+
+    @GetMapping
+    @RequestMapping("/recipe/{recipe_id}/ingredient/new")
+    public String addNewIngredient(@PathVariable String recipe_id, Model model){
+        RecipeCommands recipeCommands= recipeService.findCommandById(Long.valueOf(recipe_id));
+        //todo raise exception if null
+
+        IngredientCommands ingredientCommands=new IngredientCommands();
+        ingredientCommands.setRecipeId(Long.valueOf(recipe_id));
+//        ingredientCommands.setRecipeId(recipeCommands.getId());
+
+        ingredientCommands.setUom(new UnitOfMeasureCommands());
+
         model.addAttribute("ingredient",ingredientCommands);
         model.addAttribute("uomList",unitOfMeasureService.listAllUoms());
         return "ingredient/ingredientForm";
