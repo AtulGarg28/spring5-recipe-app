@@ -22,8 +22,6 @@ import static org.mockito.Mockito.*;
 
 class IngredientServiceImplTest {
 
-
-
     private final IngredientToIngredientCommands ingredientToIngredientCommands;
     private final IngredientCommandsToIngredient ingredientCommandsToIngredient;
 
@@ -104,6 +102,29 @@ class IngredientServiceImplTest {
         assertEquals(Long.valueOf(3L),savedCommands.getId());
         verify(recipeRepository,times(1)).findById(anyLong());
         verify(recipeRepository,times(1)).save(any(Recipe.class));
+    }
 
+    @Test
+    public void deleteIngredientByIdTest() throws Exception {
+        //given
+        Recipe recipe=new Recipe();
+        recipe.setId(1L);
+
+        Ingredient ingredient=new Ingredient();
+        ingredient.setId(2L);
+
+        recipe.addIngredient(ingredient);
+//        ingredient.setRecipe(recipe);
+
+        Optional<Recipe> optionalRecipe=Optional.of(recipe);
+
+        //when
+        when(recipeRepository.findById(anyLong())).thenReturn(optionalRecipe);
+
+        //then
+        ingredientService.deleteIngredientById(1L,2L);
+
+        verify(recipeRepository,times(1)).findById(anyLong());
+        verify(recipeRepository,times(1)).save(any(Recipe.class));
     }
 }
