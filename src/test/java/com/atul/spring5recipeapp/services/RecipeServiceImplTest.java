@@ -3,7 +3,6 @@ package com.atul.spring5recipeapp.services;
 import com.atul.spring5recipeapp.commands.RecipeCommands;
 import com.atul.spring5recipeapp.converters.RecipeCommandsToRecipe;
 import com.atul.spring5recipeapp.converters.RecipeToRecipeCommands;
-import com.atul.spring5recipeapp.exceptions.NotFoundException;
 import com.atul.spring5recipeapp.model.Recipe;
 import com.atul.spring5recipeapp.repositories.RecipeRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,7 +14,8 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
 
 class RecipeServiceImplTest {
@@ -103,20 +103,5 @@ class RecipeServiceImplTest {
 
         //then
         verify(recipeRepository,times(1)).deleteById(anyLong());
-    }
-
-    @Test
-    void testGetRecipeByIdNotFound() {
-        //given
-        Optional<Recipe> optionalRecipe=Optional.empty();
-
-        //when
-        when(recipeRepository.findById(anyLong())).thenReturn(optionalRecipe);
-
-        //then
-        assertThrows(NotFoundException.class,()->{
-            recipeService.findById(1L);
-        });
-//        Recipe returnedRecipe=recipeService.findById(1L);
     }
 }
