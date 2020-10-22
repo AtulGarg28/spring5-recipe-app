@@ -3,7 +3,6 @@ package com.atul.spring5recipeapp.services;
 import com.atul.spring5recipeapp.commands.RecipeCommands;
 import com.atul.spring5recipeapp.converters.RecipeCommandsToRecipe;
 import com.atul.spring5recipeapp.converters.RecipeToRecipeCommands;
-import com.atul.spring5recipeapp.exceptions.NotFoundException;
 import com.atul.spring5recipeapp.model.Recipe;
 import com.atul.spring5recipeapp.repositories.RecipeRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -40,8 +39,7 @@ public class RecipeServiceImpl implements RecipeService{
     public Recipe findById(Long l) {
         Optional<Recipe> optionalRecipe=recipeRepository.findById(l);
         if (!optionalRecipe.isPresent()){
-//            throw new RuntimeException("Recipe Not found");
-            throw new NotFoundException("Recipe Not found");
+            throw new RuntimeException("Recipe Not found");
         }
         return optionalRecipe.get();
     }
