@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
@@ -81,9 +82,31 @@ class RecipeControllerTest {
 
         when(recipeService.saveRecipeCommand(any())).thenReturn(recipeCommands);
 
-        mockMvc.perform(post("/recipe"))
+        mockMvc.perform(post("/recipe")
+        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+        .param("id","")
+        .param("directions","direction here..")
+        .param("description","description here..")
+        )
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/recipe/2/show"));
+    }
+
+    @Test
+    void testPostNewRecipeFormValidationFail() throws Exception {
+
+        RecipeCommands recipeCommands=new RecipeCommands();
+        recipeCommands.setId(2L);
+
+        when(recipeService.saveRecipeCommand(any())).thenReturn(recipeCommands);
+
+        mockMvc.perform(post("/recipe")
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .param("id","")
+        )
+                .andExpect(status().isOk())
+                .andExpect(model().attributeExists("recipe"))
+                .andExpect(view().name("recipe/recipeForm"));
     }
 
     @Test
